@@ -1,23 +1,21 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import {Goal} from '../goal';
+import { Quote } from '../quote-class/quote';
 import { GoalService } from '../goal-service/goal.service';
+import { AlertService } from '../alert-service/alert.service';
 @Component({
   selector: 'app-goal',
   templateUrl: './goal.component.html',
   styleUrls: ['./goal.component.css']
 })
 export class GoalComponent implements OnInit {
-  goals:Goal[]=[
-    new Goal(1,'Watch finding Nemo','its animation', new Date(2019,10,10)),
-    new Goal(2, 'Buy cookies','i have to buy chocolate', new Date(2019,11,6)), 
-    new Goal(3, 'Get new phone case','i have to get iphone x', new Date(2019,11,25)),
-    new Goal(4,'Playing fifa','playing fifa 20', new Date(2019,12,1)),
-    new Goal(5,'coding','learing to code Angular', new Date(2019,12,2)),
-    new Goal(6,'Sleeping','i want to sleep now', new Date(2019,12,4)),
-    new Goal(7,'watching GOT','Watching the latest Episode', new Date(2019,12,12)),
-    new Goal(8,'Texting','texting my baby girl', new Date(2020,1,1))
-  ];
 
+
+  goals:Goal[];
+  alertService:AlertService;
+  quote:Quote;
+  
   toggleDetails(index){
     this.goals[index].showDescription = !this.goals[index].showDescription;
   }
@@ -34,15 +32,28 @@ export class GoalComponent implements OnInit {
 
       if (toDelete){
         this.goals.splice(index,1)
+        this.alertService.alertMe("The goal has been deleted")
       }
     }
   }
-  constructor(goalService:GoalService) {
+
+
+
+  constructor(goalService:GoalService, alertService:AlertService, private http:HttpClient) {
     this.goals = goalService.getGoals()
+    this.alertService = alertService;
   }
 
-  ngOnInit() {}
-    
+  ngOnInit() {
+
+    interface ApiResponse{
+      author:string;
+      quote:string;
+    }
+
+    this.http.get<ApiResponse>("http://quotes.stormconsultancy.co.uk/random.json").subscribe(data=>{
+      // Succesful API request
+      this.quote = new Quote(data.author, data.quote)
+    })
   }
-
-
+}
