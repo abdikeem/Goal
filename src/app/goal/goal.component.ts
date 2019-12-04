@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+// import { HttpClient } from '@angular/common/http';
 import {Goal} from '../goal';
 import { Quote } from '../quote-class/quote';
 import { GoalService } from '../goal-service/goal.service';
 import { AlertService } from '../alert-service/alert.service';
 import { QuoteRequestService } from '../quote-http/quote-request.service';
+import { Router } from '@angular/router';
+
 
 
 @Component({
@@ -14,6 +16,10 @@ import { QuoteRequestService } from '../quote-http/quote-request.service';
 })
 
 export class GoalComponent implements OnInit {
+
+  goToUrl(id){
+    this.router.navigate(['/goals',id])
+  }
 
 
   goals:Goal[];
@@ -41,7 +47,7 @@ export class GoalComponent implements OnInit {
     }
   }
 
-  constructor(goalService:GoalService, alertService:AlertService, private quoteService:QuoteRequestService) {
+  constructor(goalService:GoalService, alertService:AlertService, private quoteService:QuoteRequestService, private router:Router) {
     this.goals = goalService.getGoals()
     this.alertService = alertService;
   }
