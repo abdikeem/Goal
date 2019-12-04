@@ -10,6 +10,8 @@ import { GoalDetailsComponent } from './goal-details/goal-details.component';
 import { StrikethroughDirective } from './strikethrough.directive';
 import { DateCountPipe } from './date-count.pipe';
 import { GoalFormComponent } from './goal-form/goal-form.component';
+import { NgProgressModule } from '@ngx-progressbar/core';
+import { NgProgressHttpClientModule } from '@ngx-progressbar/http-client';
 // import { GoalService } from './goal-service/goal.service';
 
 @NgModule({
@@ -28,7 +30,9 @@ import { GoalFormComponent } from './goal-form/goal-form.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgProgressModule.forRoot(),
+    NgProgressHttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
